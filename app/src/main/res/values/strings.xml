@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">XCloud</string>
+    <string name="app_version">V3.1.6</string>
+    <string name="app_title">
+        手&#160;机、平&#160;板、网&#160;页&#160;在&#160;线&#160;随&#160;存&#160;随&#160;取&#160;都&#160;毫&#160;无&#160;压&#160;力
+    </string>
+    <string name="author_name">Zhang&#160;Fan</string>
+    <string name="author_email">13784570379@163.com</string>
+    <string name="author_github">Zhang-sexy</string>
+    <string name="author_qq">206547334</string>
+    <string name="login_string">登陆</string>
+    <string name="title_login_string">XCloud账号登陆</string>
+    <string name="regist_string">注册</string>
+    <string name="enter_string">确定</string>
+    <string name="logout_string">注销</string>
+    <string name="copyright01_string">Copyright&#160;©&#160;2020&#160;XCloud.</string>
+    <string name="copyright02_string">zf233.cn&#160;All&#160;Rights&#160;Reserved</string>
+    <string name="welcome01_string">&#160;让&#160;&#160;效&#160;&#160;率&#160;&#160;陪&#160;&#160;伴&#160;&#160;左&#160;&#160;右</string>
+    <string name="welcome02_string">XCloud&#160;支&#160;持&#160;</string>
+    <string name="welcome03_string">&#160;&#160;随&#160;存&#160;随&#160;取</string>
+    <string name="search_file_string">搜索您的文件</string>
+    <string name="username_string">账号</string>
+    <string name="password_string">密码</string>
+    <string name="invite_code_string">邀请</string>
+</resources>

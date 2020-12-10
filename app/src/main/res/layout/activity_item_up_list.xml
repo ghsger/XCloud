@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/testLayout"
+    android:layout_width="150dp"
+    android:layout_height="30dp"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center_vertical"
+    android:background="#FFFFFF"
+    tools:context=".activity.ActivityFileListItem">
+
+    <ImageView
+        android:id="@+id/iconImage"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center_vertical"
+        app:srcCompat="@drawable/time" />
+
+    <TextView
+        android:id="@+id/sortTypeText"
+        android:layout_width="80dp"
+        android:layout_height="20dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_marginRight="10dp"
+        android:text="按时间排序" />
+
+
+</LinearLayout>

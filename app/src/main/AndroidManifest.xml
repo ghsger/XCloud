@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cn.zf233.xcloud">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:name=".util.MyApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/xcloudhome"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.XCloud">
+        <activity android:name=".activity.ActivityItemUpList" />
+        <activity android:name=".activity.ActivityFileListItem" />
+        <activity android:name=".activity.ActivityXCloudDetial" />
+        <activity android:name=".activity.ActivityHome" />
+        <activity android:name=".activity.ActivityLogin" />
+        <activity android:name=".activity.ActivityRegist" />
+        <activity android:name=".activity.ActivityUser" />
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.WelcomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
