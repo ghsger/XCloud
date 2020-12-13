@@ -44,11 +44,20 @@ import cn.zf233.xcloud.service.UserService;
 import cn.zf233.xcloud.service.impl.UserServiceImpl;
 import cn.zf233.xcloud.util.DateTimeUtil;
 import cn.zf233.xcloud.util.FileUtil;
-import cn.zf233.xcloud.util.RequestUtil;
 import cn.zf233.xcloud.util.JumpActivityUtil;
+import cn.zf233.xcloud.util.RequestUtil;
 import cn.zf233.xcloud.util.ToastUtil;
 
 public class ActivityHome extends AppCompatActivity {
+
+    private final UserService userService = new UserServiceImpl();
+    private final Map<String, Integer> typesMap = new HashMap<>();
+
+    private static final List<Map<String, Object>> items = new ArrayList<>();
+    public static List<File> fileList;
+
+    @SuppressLint("StaticFieldLeak")
+    public static ActivityHome activityHome;
 
     private Spinner spinner;
     private File choiceFile;
@@ -57,16 +66,9 @@ public class ActivityHome extends AppCompatActivity {
     private EditText searchStringEditText;
     private ImageView xcloudLogo;
     private ImageView flushHomeFileList;
-
-    private final UserService userService = new UserServiceImpl();
-    private final Map<String, Integer> typesMap = new HashMap<>();
-    private static final List<Map<String, Object>> items = new ArrayList<>();
     private Animation clickAnimation;
     private Animation waitAnimation;
 
-    public static List<File> fileList;
-    @SuppressLint("StaticFieldLeak")
-    public static ActivityHome activityHome;
 
     {
         // File extensions correspond to ICONS
@@ -112,7 +114,19 @@ public class ActivityHome extends AppCompatActivity {
         }
 
         init();
-        new Thread(new InitFileListRunnable(null, null)).start();
+
+        // delay refreshing the file list
+        new Handler().postDelayed(() -> new Thread(new InitFileListRunnable(null, null)).start(), 500);
+    }
+
+    // start this activity
+    @Override
+    protected void onStart() {
+        super.onStart();
+        String msg = this.getIntent().getStringExtra(Const.MSG.getDesc());
+        if (null != msg && !"".equals(msg)) {
+            ToastUtil.showShortToast(msg);
+        }
     }
 
     // restart this activity
@@ -254,15 +268,23 @@ public class ActivityHome extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 666 && resultCode == Activity.RESULT_OK) {
+            Message message = new Message();
+            Bundle bundle = new Bundle();
+            message.setData(bundle);
             Uri uri = data != null ? data.getData() : null;
             if (uri == null) {
-                ToastUtil.showLongToastCenter("上传文件选择失败");
+                bundle.putString(Const.MSG.getDesc(), "上传文件选择失败");
+                requestPromptHandler.sendMessage(message);
                 return;
             }
             String filePathByUri = FileUtil.getFilePathByUri(ActivityHome.this, uri);
             if (null == filePathByUri || "".equals(filePathByUri)) {
-                ToastUtil.showLongToastCenter("兼容问题,非nexus请选择最近文件夹");
+                bundle.putString(Const.MSG.getDesc(), "兼容问题,非nexus请选择最近文件夹");
+                requestPromptHandler.sendMessage(message);
                 return;
+            } else {
+                bundle.putString(Const.MSG.getDesc(), "开始上传");
+                requestPromptHandler.sendMessage(message);
             }
             java.io.File uploadFile = new java.io.File(filePathByUri);
             new Thread(new FileUploadRunnable(uploadFile)).start();
@@ -279,7 +301,7 @@ public class ActivityHome extends AppCompatActivity {
         }, 100L);
     }
 
-    // flush file list runnable
+    // refresh file list runnable
     class InitFileListRunnable implements Runnable {
 
         private final String searchString;
@@ -293,26 +315,28 @@ public class ActivityHome extends AppCompatActivity {
             if (requestUtil.getIsUsed()) {
                 bundle.putString(Const.MSG.getDesc(), "已有任务:" + RequestTypeENUM.getDescByCode(requestUtil.getRequestType()) + "\"" + requestUtil.getFileName() + "\"");
                 message.setData(bundle);
-
             } else {
                 requestUtil.setIsUsed(true);
                 requestUtil.setRequestType(RequestTypeENUM.FLUSH_LISTVIEW.getCode());
                 requestUtil.setFileName(null);
                 xcloudLogo.startAnimation(waitAnimation);
-                items.clear();
                 User user = FileUtil.inputShared(ActivityHome.this, Const.CURRENT_USER.getDesc(), User.class);
                 if (user != null) {
-                    List<File> files = userService.home(requestUtil, user, searchString, sortFlag).getData();
-                    assembleFileList(files);
-                    bundle.putString(Const.MSG.getDesc(), "获取/刷新成功");
+                    ServerResponse<List<File>> serverResponse = userService.home(requestUtil, user, searchString, sortFlag);
+                    if (serverResponse.getStatus() == ResponseCodeENUM.SUCCESS.getCode()) {
+                        assembleFileList(serverResponse.getData());
+                        bundle.putString(Const.MSG.getDesc(), "获取/刷新成功");
+                    } else {
+                        bundle.putString(Const.MSG.getDesc(), serverResponse.getMsg());
+                    }
                 } else {
                     bundle.putString(Const.MSG.getDesc(), "未登陆");
                 }
-                xcloudLogo.clearAnimation();
-                message.setData(bundle);
                 requestUtil.setIsUsed(false);
                 requestUtil.setRequestType(RequestTypeENUM.UNKNOWN_TYPE.getCode());
                 requestUtil.setFileName(null);
+                message.setData(bundle);
+                xcloudLogo.clearAnimation();
             }
             flushListViewHandler.sendMessage(message);
         }
@@ -347,13 +371,13 @@ public class ActivityHome extends AppCompatActivity {
                     if (serverResponse.getStatus() == ResponseCodeENUM.SUCCESS.getCode()) {
                         bundle.putString(Const.MSG.getDesc(), "删除成功");
                     } else {
-                        bundle.putString(Const.MSG.getDesc(), "删除失败");
+                        bundle.putString(Const.MSG.getDesc(), serverResponse.getMsg());
                     }
-                    message.setData(bundle);
-                    xcloudLogo.clearAnimation();
                     requestUtil.setIsUsed(false);
                     requestUtil.setRequestType(RequestTypeENUM.UNKNOWN_TYPE.getCode());
                     requestUtil.setFileName(null);
+                    message.setData(bundle);
+                    xcloudLogo.clearAnimation();
                     new Thread(new InitFileListRunnable(null, null)).start();
                 }
                 requestPromptHandler.sendMessage(message);
@@ -385,17 +409,17 @@ public class ActivityHome extends AppCompatActivity {
                     requestUtil.setRequestType(RequestTypeENUM.UPLOAD_TYPE.getCode());
                     requestUtil.setFileName(file.getName());
                     xcloudLogo.startAnimation(waitAnimation);
-                    ServerResponse listServerResponse = requestUtil.uploadFile(RequestURL.UPLOAD_FILE_URL.getDesc(), currentUser, file);
-                    if (listServerResponse.getStatus() == ResponseCodeENUM.SUCCESS.getCode()) {
+                    ServerResponse serverResponse = requestUtil.uploadFile(RequestURL.UPLOAD_FILE_URL.getDesc(), currentUser, file);
+                    if (serverResponse.getStatus() == ResponseCodeENUM.SUCCESS.getCode()) {
                         bundle.putString(Const.MSG.getDesc(), "上传成功");
                     } else {
-                        bundle.putString(Const.MSG.getDesc(), "上传失败");
+                        bundle.putString(Const.MSG.getDesc(), serverResponse.getMsg());
                     }
-                    message.setData(bundle);
-                    xcloudLogo.clearAnimation();
                     requestUtil.setIsUsed(false);
                     requestUtil.setRequestType(RequestTypeENUM.UNKNOWN_TYPE.getCode());
                     requestUtil.setFileName(null);
+                    message.setData(bundle);
+                    xcloudLogo.clearAnimation();
                     new Thread(new InitFileListRunnable(null, null)).start();
                 }
                 requestPromptHandler.sendMessage(message);
@@ -427,7 +451,7 @@ public class ActivityHome extends AppCompatActivity {
                     requestUtil.setRequestType(RequestTypeENUM.DOWNLOAD_TYPE.getCode());
                     requestUtil.setFileName(file.getFileName());
                     xcloudLogo.startAnimation(waitAnimation);
-                    ToastUtil.showShortToast("开始下载" + "\"" + requestUtil.getFileName() + "\"");
+//                    ToastUtil.showShortToast("开始下载" + "\"" + requestUtil.getFileName() + "\"");
                     java.io.File readyOpenFile = requestUtil.fileDownload(RequestURL.DOWNLOAD_URL.getDesc(), currentUser, file.getFileId());
                     if (readyOpenFile != null) {
                         bundle.putString(Const.MSG.getDesc(), "下载完成");
@@ -440,11 +464,11 @@ public class ActivityHome extends AppCompatActivity {
                     } else {
                         bundle.putString(Const.MSG.getDesc(), "下载失败");
                     }
-                    message.setData(bundle);
-                    xcloudLogo.clearAnimation();
                     requestUtil.setIsUsed(false);
                     requestUtil.setRequestType(RequestTypeENUM.UNKNOWN_TYPE.getCode());
                     requestUtil.setFileName(null);
+                    message.setData(bundle);
+                    xcloudLogo.clearAnimation();
                 }
                 requestPromptHandler.sendMessage(message);
             }
@@ -456,18 +480,19 @@ public class ActivityHome extends AppCompatActivity {
         }
     }
 
-    // ui flush handler
+    // ui refresh handler
     private final Handler flushListViewHandler = new Handler(new Handler.Callback() {
         @SuppressLint("SetTextI18n")
         @Override
         public boolean handleMessage(Message msg) {
-            @SuppressLint("HandlerLeak") SimpleAdapter adapter = new SimpleAdapter(
+            @SuppressLint("HandlerLeak")
+            SimpleAdapter adapter = new SimpleAdapter(
                     ActivityHome.this,
                     items,
                     R.layout.activity_file_list_item,
                     new String[]{"logoID", "fileName", "fileSize", "fileUploadTime"},
-                    new int[]{R.id.fileLogoImageView, R.id.fileNameText, R.id.fileSizeText, R.id.fileUploadTimeText}
-            ) {
+                    new int[]{R.id.fileLogoImageView, R.id.fileNameText, R.id.fileSizeText, R.id.fileUploadTimeText}) {
+
                 @Override
                 public View getView(int position, View convertView, ViewGroup parent) {
                     View view = super.getView(position, convertView, parent);
@@ -483,7 +508,7 @@ public class ActivityHome extends AppCompatActivity {
         }
     });
 
-    // download/upload prompt handler
+    // request or prompt handler
     private final Handler requestPromptHandler = new Handler(msg -> {
         String messageString = msg.getData().getString(Const.MSG.getDesc());
         ToastUtil.showShortToast(messageString);
@@ -491,7 +516,9 @@ public class ActivityHome extends AppCompatActivity {
     });
 
 
+    // assemble File List item data
     private void assembleFileList(List<File> files) {
+        items.clear();
         if (!files.isEmpty()) {
             ActivityHome.fileList = files;
             for (File file : files) {

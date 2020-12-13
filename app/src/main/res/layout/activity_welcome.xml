@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="130dp"
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
 
@@ -49,7 +49,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/welcome01_string"
                         android:textAlignment="center"
-                        android:textSize="11sp"
+                        android:textSize="9dp"
                         tools:ignore="RtlCompat" />
                 </LinearLayout>
             </LinearLayout>
@@ -66,7 +66,6 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="9dp"
                 android:text="@string/welcome02_string"
                 android:textSize="12dp"
                 tools:ignore="RtlCompat" />
@@ -74,23 +73,20 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_marginTop="9dp"
                 android:src="@drawable/pc" />
 
             <ImageView
                 android:layout_width="12dp"
                 android:layout_height="16dp"
                 android:layout_marginLeft="3dp"
-                android:layout_marginTop="9dp"
                 android:src="@drawable/phone" />
 
             <TextView
                 android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="9dp"
                 android:text="@string/welcome03_string"
-                android:textSize="12dp"
+                android:textSize="10dp"
                 tools:ignore="RtlCompat" />
         </LinearLayout>
     </LinearLayout>

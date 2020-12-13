@@ -212,7 +212,7 @@ public class FileUtil {
 
     // create and write log file
     public static void createAndWriteUncaughtExceptionLog(String exceptionDetail) {
-        //获取外部存储路径
+        // get external storage path
         String storage = SdPathConst.sdPath;
         File dirFile = new File(storage);
         if (!dirFile.exists()) {

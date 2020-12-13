@@ -25,11 +25,12 @@ import cn.zf233.xcloud.util.ToastUtil;
 public class ActivityRegist extends AppCompatActivity {
 
     private final UserService userService = new UserServiceImpl();
-    private Animation clickAnimation;
+
     private EditText usernameRegistText;
     private EditText passwordRegistText;
     private EditText codeRegistText;
     private View registUserLayout;
+    private Animation clickAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,13 +67,13 @@ public class ActivityRegist extends AppCompatActivity {
             ServerResponse<User> response = userService.regist(RequestUtil.getRequestUtil(), user, code);
             if (response.getStatus() == ResponseCodeENUM.SUCCESS.getCode()) {
                 FileUtil.outputShared(ActivityRegist.this, Const.CURRENT_USER.getDesc(), response.getData());
-                ToastUtil.showShortToast("注册成功");
                 MainActivity.mainActivity.finish();
                 Intent intent = new Intent(ActivityRegist.this, ActivityHome.class);
+                intent.putExtra(Const.MSG.getDesc(), "注册成功");
                 JumpActivityUtil.jumpActivity(this, intent, 100L, true);
                 return;
             }
-            Toast.makeText(ActivityRegist.this, response.getMsg(), Toast.LENGTH_SHORT).show();
+            ToastUtil.showShortToast(response.getMsg());
         });
 
     }

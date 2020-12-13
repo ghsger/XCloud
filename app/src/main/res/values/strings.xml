@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">XCloud</string>
-    <string name="app_version">V3.1.6</string>
+    <string name="app_version">V3.2.2</string>
     <string name="app_title">
         手&#160;机、平&#160;板、网&#160;页&#160;在&#160;线&#160;随&#160;存&#160;随&#160;取&#160;都&#160;毫&#160;无&#160;压&#160;力
     </string>
@@ -15,7 +15,7 @@
     <string name="logout_string">注销</string>
     <string name="copyright01_string">Copyright&#160;©&#160;2020&#160;XCloud.</string>
     <string name="copyright02_string">zf233.cn&#160;All&#160;Rights&#160;Reserved</string>
-    <string name="welcome01_string">&#160;让&#160;&#160;效&#160;&#160;率&#160;&#160;陪&#160;&#160;伴&#160;&#160;左&#160;&#160;右</string>
+    <string name="welcome01_string">&#160;让&#160;&#160;&#160;效&#160;&#160;&#160;率&#160;&#160;&#160;陪&#160;&#160;&#160;伴&#160;&#160;&#160;左&#160;&#160;&#160;右</string>
     <string name="welcome02_string">XCloud&#160;支&#160;持&#160;</string>
     <string name="welcome03_string">&#160;&#160;随&#160;存&#160;随&#160;取</string>
     <string name="search_file_string">搜索您的文件</string>

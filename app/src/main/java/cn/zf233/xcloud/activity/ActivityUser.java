@@ -30,20 +30,21 @@ import cn.zf233.xcloud.util.JumpActivityUtil;
 
 public class ActivityUser extends AppCompatActivity {
 
-    private static final List<Integer> userGradeImgID = new ArrayList<>();
-    private Animation clickAnimation;
-    private View logoutLayout;
     private static final UserService userService = new UserServiceImpl();
+    private final List<Integer> userGradeImgID = new ArrayList<>();
+
     private static User user;
 
+    private View logoutLayout;
     private TextView currentUserUsernameText;
     private ProgressBar levelGroupBar;
     private ProgressBar numberCountBar;
     private TextView levelGroupText;
     private TextView numberCountText;
     private ImageView userGradeImg;
+    private Animation clickAnimation;
 
-    static {
+    {
         userGradeImgID.add(R.drawable.no01);
         userGradeImgID.add(R.drawable.no02);
         userGradeImgID.add(R.drawable.no03);
@@ -97,7 +98,7 @@ public class ActivityUser extends AppCompatActivity {
             }
             int downloadCount = user.getDownloadCount() % 100;
             int availableSpace = user.getGrade() * 10;
-            int usedSpace = ActivityHome.fileList.size();
+            int usedSpace = ActivityHome.fileList == null ? 0 : ActivityHome.fileList.size();
             numberCountBar.setMax(availableSpace);
             numberCountBar.setProgress(usedSpace);
             numberCountText.setText(usedSpace + "/" + availableSpace);

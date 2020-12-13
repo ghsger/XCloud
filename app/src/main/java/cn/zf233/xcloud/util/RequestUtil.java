@@ -124,7 +124,6 @@ public class RequestUtil {
 
     // file upload
     public ServerResponse uploadFile(String url, User user, File uploadFile) {
-
         OkHttpClient client = new OkHttpClient
                 .Builder()
                 .connectTimeout(60, TimeUnit.SECONDS)

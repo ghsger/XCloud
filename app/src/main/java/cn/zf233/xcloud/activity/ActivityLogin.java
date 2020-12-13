@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import cn.zf233.xcloud.R;
 import cn.zf233.xcloud.common.Const;
+import cn.zf233.xcloud.common.ResponseCodeENUM;
 import cn.zf233.xcloud.common.ServerResponse;
 import cn.zf233.xcloud.entity.User;
 import cn.zf233.xcloud.service.UserService;
@@ -23,10 +24,11 @@ import cn.zf233.xcloud.util.ToastUtil;
 public class ActivityLogin extends AppCompatActivity {
 
     private final UserService userService = new UserServiceImpl();
-    private Animation clickAnimation;
+
     private EditText usernameLoginText;
     private EditText passwordLoginText;
     private View loginUserLayout;
+    private Animation clickAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +57,11 @@ public class ActivityLogin extends AppCompatActivity {
             user.setUsername(username);
             user.setPassword(password);
             ServerResponse<User> response = userService.login(RequestUtil.getRequestUtil(), user);
-            if (response.getData() != null) {
+            if (response.getStatus() == ResponseCodeENUM.SUCCESS.getCode()) {
                 FileUtil.outputShared(ActivityLogin.this, Const.CURRENT_USER.getDesc(), response.getData());
-                ToastUtil.showShortToast("登陆成功");
                 MainActivity.mainActivity.finish();
                 Intent intent = new Intent(ActivityLogin.this, ActivityHome.class);
+                intent.putExtra(Const.MSG.getDesc(), "登陆成功");
                 JumpActivityUtil.jumpActivity(this, intent, 100L, true);
                 return;
             }

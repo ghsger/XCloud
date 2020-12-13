@@ -14,8 +14,8 @@ import cn.zf233.xcloud.util.JumpActivityUtil;
 
 public class ActivityXCloudDetial extends AppCompatActivity {
 
-    private Animation clickAnimation;
     private View xcloudDetailEnterButton;
+    private Animation clickAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

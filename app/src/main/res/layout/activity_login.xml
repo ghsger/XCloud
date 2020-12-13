@@ -41,7 +41,7 @@
                 android:id="@+id/textView9"
                 android:layout_width="50dp"
                 android:layout_height="40dp"
-                android:gravity="bottom"
+                android:gravity="center"
                 android:text="@string/username_string"
                 android:textSize="18dp" />
 
@@ -64,7 +64,7 @@
                 android:id="@+id/textView10"
                 android:layout_width="50dp"
                 android:layout_height="40dp"
-                android:gravity="bottom"
+                android:gravity="center"
                 android:text="@string/password_string"
                 android:textSize="17dp" />
 

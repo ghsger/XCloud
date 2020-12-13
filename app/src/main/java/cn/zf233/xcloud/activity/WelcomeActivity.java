@@ -23,6 +23,7 @@ import cn.zf233.xcloud.util.RequestUtil;
 public class WelcomeActivity extends AppCompatActivity {
 
     private final UserService userService = new UserServiceImpl();
+
     private View view;
 
     @Override
@@ -87,7 +88,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 FileUtil.removeShared(WelcomeActivity.this, Const.CURRENT_USER.getDesc());
                 FileUtil.outputShared(WelcomeActivity.this, Const.CURRENT_USER.getDesc(), user);
                 intent = new Intent(WelcomeActivity.this, ActivityHome.class);
-                msg = "登陆成功";
+                msg = "获取用户信息成功";
             } else {
                 intent = new Intent(WelcomeActivity.this, MainActivity.class);
                 msg = "服务器未响应";

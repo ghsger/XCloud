@@ -18,11 +18,12 @@ import cn.zf233.xcloud.util.ToastUtil;
 
 public class MainActivity extends AppCompatActivity {
 
+    @SuppressLint("StaticFieldLeak")
+    public static MainActivity mainActivity;
+
     private View loginLayout;
     private View registLayout;
     private Animation clickAnimation;
-    @SuppressLint("StaticFieldLeak")
-    public static MainActivity mainActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +54,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        String welcomeMsg = this.getIntent().getStringExtra(Const.MSG.getDesc());
-        if (!"".equals(welcomeMsg)) {
-            ToastUtil.showLongToast(welcomeMsg);
+        String msg = this.getIntent().getStringExtra(Const.MSG.getDesc());
+        if (null != msg && !"".equals(msg)) {
+            ToastUtil.showLongToast(msg);
         }
     }
 }

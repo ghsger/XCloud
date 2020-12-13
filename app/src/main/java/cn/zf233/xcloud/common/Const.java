@@ -7,8 +7,7 @@ public enum Const {
 
     CURRENT_USER(0, "current_user"),
     MSG(1, "msg"),
-    WELCOME_MSG(2, "welcome_msg"),
-    LOG_FILE_NAME(3, "xcloud_log.txt");
+    LOG_FILE_NAME(2, "xcloud_log.txt");
 
     private Integer code;
     private String desc;
@@ -21,4 +20,5 @@ public enum Const {
     public String getDesc() {
         return desc;
     }
+
 }
