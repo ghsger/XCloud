@@ -25,6 +25,7 @@ import android.widget.Spinner;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,10 +66,9 @@ public class ActivityHome extends AppCompatActivity {
     private ListView listFileView;
     private EditText searchStringEditText;
     private ImageView xcloudLogo;
-    private ImageView flushHomeFileList;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private Animation clickAnimation;
     private Animation waitAnimation;
-
 
     {
         // File extensions correspond to ICONS
@@ -117,6 +117,8 @@ public class ActivityHome extends AppCompatActivity {
 
         // delay refreshing the file list
         new Handler().postDelayed(() -> new Thread(new InitFileListRunnable(null, null)).start(), 500);
+
+
     }
 
     // start this activity
@@ -147,15 +149,18 @@ public class ActivityHome extends AppCompatActivity {
         // controls
         currentUser = FileUtil.inputShared(this, Const.CURRENT_USER.getDesc(), User.class);
         activityHome = ActivityHome.this;
-        listFileView = findViewById(R.id.listFileView);
         spinner = findViewById(R.id.spinnerUp);
         listFileView = findViewById(R.id.listFileView);
         searchStringEditText = findViewById(R.id.searchFileText);
         xcloudLogo = findViewById(R.id.xcloudLogo);
-        flushHomeFileList = findViewById(R.id.flushHomeFileList);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.fileListRefresh);
         ImageView xcloudTitle = findViewById(R.id.xcloudTitle);
         ImageView currentUserHeadImage = findViewById(R.id.currentUserHeadImage);
         ImageView spinnerShow = findViewById(R.id.spinnerShow);
+
+        // the drop-down refresh
+        swipeRefreshLayout.setColorSchemeResources(R.color.file_list_refresh);
+        swipeRefreshLayout.setOnRefreshListener(() -> new Thread(new InitFileListRunnable(null, null)).start());
 
         // binding event-upload file
         findViewById(R.id.uploadFile).setOnClickListener(v -> {
@@ -257,10 +262,6 @@ public class ActivityHome extends AppCompatActivity {
             JumpActivityUtil.jumpActivity(this, intent, 100L, false);
         });
         findViewById(R.id.searchFileEnter).setOnClickListener(v -> new Thread(new InitFileListRunnable(searchStringEditText.getText().toString(), null)).start());
-        flushHomeFileList.setOnClickListener(v -> {
-            flushHomeFileList.startAnimation(clickAnimation);
-            new Thread(new InitFileListRunnable(null, null)).start();
-        });
     }
 
     // callback function（selecting the file）
@@ -503,6 +504,7 @@ public class ActivityHome extends AppCompatActivity {
             listFileView.setAdapter(adapter);
             String messageString = msg.getData().getString(Const.MSG.getDesc());
             ToastUtil.showShortToast(messageString);
+            swipeRefreshLayout.setRefreshing(false);
             searchStringEditText.setText("");
             return false;
         }

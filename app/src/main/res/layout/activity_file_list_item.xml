@@ -3,75 +3,76 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/testLayout"
-    android:layout_width="wrap_content"
-    android:layout_height="55dp"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
     android:layout_gravity="center_horizontal"
-    android:background="?android:attr/selectableItemBackground"
     android:gravity="center_horizontal"
-    tools:context=".activity.ActivityFileListItem"
-    android:orientation="horizontal">
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    tools:context=".activity.ActivityFileListItem">
+
 
     <LinearLayout
-        android:layout_width="100dp"
-        android:layout_height="match_parent"/>
-
-    <ImageView
-        android:id="@+id/fileLogoImageView"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_gravity="center_vertical"
-        app:srcCompat="@drawable/html" />
-
-    <LinearLayout
-        android:layout_width="260dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="10dp"
-        android:orientation="vertical">
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/fileNameText"
-            android:layout_width="250dp"
-            android:layout_height="25dp"
-            android:gravity="center_vertical"
-            android:singleLine="true"
-            android:text="文件名"
-            android:textSize="15dp" />
+        <ImageView
+            android:id="@+id/fileLogoImageView"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            app:srcCompat="@drawable/html" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:orientation="horizontal">
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/fileUploadTimeText"
-                android:layout_width="180dp"
-                android:layout_height="match_parent"
+                android:id="@+id/fileNameText"
+                android:layout_width="250dp"
+                android:layout_height="22dp"
                 android:gravity="center_vertical"
-                android:textSize="12dp"
-                android:text="上传时间" />
-            <TextView
-                android:id="@+id/fileSizeText"
-                android:layout_width="70dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical|right"
-                android:textSize="12dp"
-                android:text="文件大小" />
+                android:singleLine="true"
+                android:text="文件名"
+                android:textSize="15dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/fileUploadTimeText"
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="上传时间"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/fileSizeText"
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|right"
+                    android:text="文件大小"
+                    android:textSize="12dp" />
+            </LinearLayout>
+
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/unloadText"
+            android:layout_width="20dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/eye" />
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/unloadText"
-        android:layout_width="20dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="15dp"
-        android:src="@drawable/eye" />
-
-    <LinearLayout
-        android:layout_width="100dp"
-        android:layout_height="match_parent"/>
 
 
 </LinearLayout>
