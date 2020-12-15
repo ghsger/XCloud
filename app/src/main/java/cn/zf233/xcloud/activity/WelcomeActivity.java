@@ -75,7 +75,7 @@ public class WelcomeActivity extends AppCompatActivity {
             User user = FileUtil.inputShared(WelcomeActivity.this, Const.CURRENT_USER.getDesc(), User.class);
             if (user == null) {
                 intent = new Intent(WelcomeActivity.this, MainActivity.class);
-                jumpActivity(intent, "");
+                jumpActivity(intent, null);
                 return;
             }
             ServerResponse<User> response = userService.login(RequestUtil.getRequestUtil(), user);

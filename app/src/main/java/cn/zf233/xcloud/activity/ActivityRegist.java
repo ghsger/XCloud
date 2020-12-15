@@ -75,6 +75,5 @@ public class ActivityRegist extends AppCompatActivity {
             }
             ToastUtil.showShortToast(response.getMsg());
         });
-
     }
 }

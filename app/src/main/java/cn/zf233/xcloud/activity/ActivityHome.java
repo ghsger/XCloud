@@ -109,12 +109,6 @@ public class ActivityHome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        // get disk access
-        boolean equals = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
-        if (!equals) {
-            ToastUtil.showLongToast("未赋予相应权限，部分功能将无法使用");
-        }
-
         init();
         // delay refreshing the file list
         new Handler().postDelayed(() -> new Thread(new InitFileListRunnable(null, null)).start(), 500);

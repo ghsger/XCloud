@@ -3,6 +3,7 @@ package cn.zf233.xcloud.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.view.View;
 import android.view.animation.Animation;
@@ -29,6 +30,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // get disk access
+        boolean equals = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+        if (!equals) {
+            ToastUtil.showLongToast("未赋予相应权限，部分功能将无法使用");
+        }
 
         loginLayout = findViewById(R.id.loginLayout);
         registLayout = findViewById(R.id.regist);
@@ -57,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         String msg = this.getIntent().getStringExtra(Const.MSG.getDesc());
         if (null != msg && !"".equals(msg)) {
             ToastUtil.showLongToast(msg);
+            this.getIntent().removeExtra(Const.MSG.getDesc());
         }
     }
 }

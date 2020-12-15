@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.View;
 import android.view.animation.Animation;
@@ -113,7 +114,6 @@ public class ActivityUser extends AppCompatActivity {
     private void jumpActivity(Intent intent) {
         ActivityHome.activityHome.finish();
         JumpActivityUtil.jumpActivity(this, intent, 100L, true);
-
     }
 
     // check and get user Detail
@@ -121,12 +121,13 @@ public class ActivityUser extends AppCompatActivity {
 
         @Override
         public void run() {
+            Looper.prepare();
             User user = FileUtil.inputShared(ActivityUser.this, Const.CURRENT_USER.getDesc(), User.class);
             ServerResponse<User> response = userService.login(RequestUtil.getRequestUtil(), user);
             if (response.getStatus() == ResponseCodeENUM.ERROR.getCode()) {
                 FileUtil.removeShared(ActivityUser.this, Const.CURRENT_USER.getDesc());
                 Intent intent = new Intent(ActivityUser.this, MainActivity.class);
-                intent.putExtra(Const.MSG.getDesc(), "用户登陆失效");
+                intent.putExtra(Const.MSG.getDesc(), response.getMsg());
                 jumpActivity(intent);
 
             } else if (response.getStatus() == ResponseCodeENUM.SUCCESS.getCode()) {
@@ -134,6 +135,7 @@ public class ActivityUser extends AppCompatActivity {
                 FileUtil.outputShared(ActivityUser.this, Const.CURRENT_USER.getDesc(), user);
                 userHandler.sendMessage(new Message());
             }
+            Looper.loop();
         }
     }
 }
