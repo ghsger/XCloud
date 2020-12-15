@@ -82,13 +82,13 @@ public class WelcomeActivity extends AppCompatActivity {
             if (response.getStatus() == ResponseCodeENUM.ERROR.getCode()) {
                 FileUtil.removeShared(WelcomeActivity.this, Const.CURRENT_USER.getDesc());
                 intent = new Intent(WelcomeActivity.this, MainActivity.class);
-                msg = "用户登陆失效";
+                msg = response.getMsg();
             } else if (response.getStatus() == ResponseCodeENUM.SUCCESS.getCode()) {
                 user = response.getData();
                 FileUtil.removeShared(WelcomeActivity.this, Const.CURRENT_USER.getDesc());
                 FileUtil.outputShared(WelcomeActivity.this, Const.CURRENT_USER.getDesc(), user);
                 intent = new Intent(WelcomeActivity.this, ActivityHome.class);
-                msg = "获取用户信息成功";
+                msg = response.getMsg();
             } else {
                 intent = new Intent(WelcomeActivity.this, MainActivity.class);
                 msg = "服务器未响应";

@@ -71,6 +71,7 @@ public class RequestUtil {
                     .add("username", user.getUsername())
                     .add("password", user.getPassword())
                     .add("fileid", fileId.toString())
+                    .add("appVersionCode", RequestTypeENUM.VERSION_FAILURE.getDesc())
                     .build();
             Request request = new Request.Builder()
                     .url(url).post(body)
@@ -102,6 +103,7 @@ public class RequestUtil {
                     .add("username", user.getUsername())
                     .add("password", user.getPassword())
                     .add("fileid", fileID.toString())
+                    .add("appVersionCode", RequestTypeENUM.VERSION_FAILURE.getDesc())
                     .build();
             Request request = new Request.Builder()
                     .url(url)
@@ -136,6 +138,7 @@ public class RequestUtil {
                 .addFormDataPart("id", user.getId().toString())
                 .addFormDataPart("username", user.getUsername())
                 .addFormDataPart("password", user.getPassword())
+                .addFormDataPart("appVersionCode", RequestTypeENUM.VERSION_FAILURE.getDesc())
                 .build();
         Request request = new Request.Builder()
                 .url(url)

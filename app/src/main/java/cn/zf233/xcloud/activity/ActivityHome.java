@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -26,6 +27,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -138,6 +141,7 @@ public class ActivityHome extends AppCompatActivity {
     }
 
     // init
+    @SuppressLint("ClickableViewAccessibility")
     private void init() {
         // animation
         clickAnimation = AnimationUtils.loadAnimation(this, R.anim.click);
@@ -150,17 +154,37 @@ public class ActivityHome extends AppCompatActivity {
         listFileView = findViewById(R.id.listFileView);
         searchStringEditText = findViewById(R.id.searchFileText);
         xcloudLogo = findViewById(R.id.xcloudLogo);
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.fileListRefresh);
+        swipeRefreshLayout = findViewById(R.id.fileListRefresh);
         ImageView xcloudTitle = findViewById(R.id.xcloudTitle);
         ImageView currentUserHeadImage = findViewById(R.id.currentUserHeadImage);
         ImageView spinnerShow = findViewById(R.id.spinnerShow);
+        FloatingActionButton floatingActionButton = findViewById(R.id.uploadFile);
+
+
+        // binding move file list view event
+        listFileView.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                case MotionEvent.ACTION_MOVE:
+                    floatingActionButton.setEnabled(false);
+                    floatingActionButton.setVisibility(View.GONE);
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    floatingActionButton.setEnabled(true);
+                    floatingActionButton.setVisibility(View.VISIBLE);
+                    break;
+            }
+            return false;
+        });
 
         // the drop-down refresh
         swipeRefreshLayout.setColorSchemeResources(R.color.file_list_refresh);
+        // binding drop-down event
         swipeRefreshLayout.setOnRefreshListener(() -> new Thread(new InitFileListRunnable(null, null)).start());
 
         // binding event-upload file
-        findViewById(R.id.uploadFile).setOnClickListener(v -> {
+        floatingActionButton.setOnClickListener(v -> {
             findViewById(R.id.uploadFile).startAnimation(clickAnimation);
             // open file selector
             openFileSelector();

@@ -61,7 +61,7 @@ public class ActivityLogin extends AppCompatActivity {
                 FileUtil.outputShared(ActivityLogin.this, Const.CURRENT_USER.getDesc(), response.getData());
                 MainActivity.mainActivity.finish();
                 Intent intent = new Intent(ActivityLogin.this, ActivityHome.class);
-                intent.putExtra(Const.MSG.getDesc(), "登陆成功");
+                intent.putExtra(Const.MSG.getDesc(), response.getMsg());
                 JumpActivityUtil.jumpActivity(this, intent, 100L, true);
                 return;
             }

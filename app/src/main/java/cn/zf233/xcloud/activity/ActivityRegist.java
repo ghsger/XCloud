@@ -69,7 +69,7 @@ public class ActivityRegist extends AppCompatActivity {
                 FileUtil.outputShared(ActivityRegist.this, Const.CURRENT_USER.getDesc(), response.getData());
                 MainActivity.mainActivity.finish();
                 Intent intent = new Intent(ActivityRegist.this, ActivityHome.class);
-                intent.putExtra(Const.MSG.getDesc(), "注册成功");
+                intent.putExtra(Const.MSG.getDesc(), response.getMsg());
                 JumpActivityUtil.jumpActivity(this, intent, 100L, true);
                 return;
             }
