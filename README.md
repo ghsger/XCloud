@@ -13,9 +13,9 @@
 
 ## 项目架构
 
-#### 简单的前台系统结构图，不太会画图
+#### 简单的前台系统结构图
 
-<img src="http://182.92.233.100/group1/M00/00/03/rBeULl_V5MmAbydJAASbuKoMk5w583_big.png" width="700">
+<img src="http://www.zf233.com.cn/static/markdown/xcloud/detial.png" width="1000px" height="900px">
 
 ### App
 
@@ -39,20 +39,16 @@
 
 ## 页面展示
 
-* #### 欢迎界面
-    * <img src="http://182.92.233.100/group1/M00/00/03/rBeULl_V426AOQULAADzGxKPG9I88_big.jpeg" width="200px">
-* #### 导航界面
-    * <img src="http://182.92.233.100/group1/M00/00/03/rBeULl_V40aAfafuAAFEWZs1ZPU56_big.jpeg" width="200px">
-* #### 登陆界面
-    * <img src="http://182.92.233.100/group1/M00/00/03/rBeULl_V4zqAR8ZEAAEX0PCjTYc34_big.jpeg" width="200px">
-* #### 注册界面
-    * <img src="http://182.92.233.100/group1/M00/00/03/rBeULl_V41SATM60AAEX6ILGfWk17_big.jpeg" width="200px">
-* #### 主界面
-    * <img src="http://182.92.233.100/group1/M00/00/03/rBeULl_V4yyATO5UAAJuTAUrwu455_big.jpeg" width="200px">
-* #### 用户信息页面
-    * <img src="http://182.92.233.100/group1/M00/00/03/rBeULl_V42GARfy4AAEefH7_DxU87_big.jpeg" width="200px">
+* #### 欢迎&导航&主界面
+    <img src="http://www.zf233.com.cn/static/markdown/xcloud/welcome.jpeg" width="200px">
+    <img src="http://www.zf233.com.cn/static/markdown/xcloud/main.jpeg" width="200px">
+    <img src="http://www.zf233.com.cn/static/markdown/xcloud/home.jpeg" width="200px">
+* #### 用户信息&登陆&注册界面
+    <img src="http://www.zf233.com.cn/static/markdown/xcloud/user.jpeg" width="200px">
+    <img src="http://www.zf233.com.cn/static/markdown/xcloud/login.jpeg" width="200px">
+    <img src="http://www.zf233.com.cn/static/markdown/xcloud/regist.jpeg" width="200px">
 * #### 开发者信息界面（没啥用）
-    * <img src="http://182.92.233.100/group1/M00/00/03/rBeULl_V4weALzKBAAFIRVopx4U82_big.jpeg" width="200px">
+    <img src="http://www.zf233.com.cn/static/markdown/xcloud/developers.jpeg" width="200px">
 
 ### 本地开发运行部署
 
@@ -68,8 +64,11 @@
 
 #### Xcloud后台项目
 
-* 后台项目请移步到本人XCloud-Server仓库
+* 后台项目请移步到本人XCloud-Server仓库 </br>https://github.com/zhang-sexy/XCloud-Server.git
 
 ### 写在最后
 
 * 个人学习使用遵循GPL开源协议
+* Logo已申请版权，请勿商用
+* 其他UI图标来自<a href="https://http://www.iconfont.cn">Iconfont-阿里巴巴矢量图标库</a> 以及<a href="https://http://www.easyicon.net">
+  easyicon</a>
