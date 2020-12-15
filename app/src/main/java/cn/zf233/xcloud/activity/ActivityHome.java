@@ -56,7 +56,6 @@ public class ActivityHome extends AppCompatActivity {
 
     private static final List<Map<String, Object>> items = new ArrayList<>();
     public static List<File> fileList;
-
     @SuppressLint("StaticFieldLeak")
     public static ActivityHome activityHome;
 
@@ -114,11 +113,8 @@ public class ActivityHome extends AppCompatActivity {
         }
 
         init();
-
         // delay refreshing the file list
         new Handler().postDelayed(() -> new Thread(new InitFileListRunnable(null, null)).start(), 500);
-
-
     }
 
     // start this activity
@@ -128,6 +124,7 @@ public class ActivityHome extends AppCompatActivity {
         String msg = this.getIntent().getStringExtra(Const.MSG.getDesc());
         if (null != msg && !"".equals(msg)) {
             ToastUtil.showShortToast(msg);
+            getIntent().removeExtra(Const.MSG.getDesc());
         }
     }
 

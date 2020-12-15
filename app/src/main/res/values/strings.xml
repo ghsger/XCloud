@@ -22,4 +22,6 @@
     <string name="username_string">账号</string>
     <string name="password_string">密码</string>
     <string name="invite_code_string">邀请</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
