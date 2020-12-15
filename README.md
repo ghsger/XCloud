@@ -15,7 +15,7 @@
 
 #### 简单的前台系统结构图
 
-<img src="http://www.zf233.com.cn/static/markdown/xcloud/detial.png" width="1000px" height="900px">
+<img src="http://www.zf233.com.cn/static/markdown/xcloud/detial.png" width="700">
 
 ### App
 
