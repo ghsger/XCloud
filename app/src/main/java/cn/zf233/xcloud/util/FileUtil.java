@@ -17,6 +17,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -67,11 +69,21 @@ public class FileUtil {
         }
         File outputFile = new File(SdPathConst.sdPath, fileName);
         OutputStream outputStream = null;
+        String existsFileName;
         try {
             if (outputFile.exists()) {
-                if (outputFile.delete()) {
-                    Log.i("msg", "Delete file with same name");
+                int i = 2;
+                while (true) {
+                    existsFileName = fileName.substring(0, fileName.indexOf(".")) + "(" + i + ")" + fileName.substring(fileName.indexOf("."));
+                    outputFile = new File(SdPathConst.sdPath, existsFileName);
+                    if (!outputFile.exists()) {
+                       break;
+                    }
+                    i++;
                 }
+//                if (outputFile.delete()) {
+//                    Log.i("msg", "Delete file with same name");
+//                }
             }
             boolean newFile = outputFile.createNewFile();
             if (newFile) {

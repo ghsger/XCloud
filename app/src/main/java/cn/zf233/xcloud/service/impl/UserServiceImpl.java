@@ -8,7 +8,7 @@ import cn.zf233.xcloud.common.RequestURL;
 import cn.zf233.xcloud.common.ResponseCodeENUM;
 import cn.zf233.xcloud.common.ServerResponse;
 import cn.zf233.xcloud.entity.File;
-import cn.zf233.xcloud.entity.RequestBody;
+import cn.zf233.xcloud.common.RequestBody;
 import cn.zf233.xcloud.entity.User;
 import cn.zf233.xcloud.service.UserService;
 import cn.zf233.xcloud.util.RequestUtil;
@@ -35,22 +35,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ServerResponse<List<File>> home(RequestUtil requestUtil, User user, String searchString, String sortFlag) {
+    public ServerResponse<List<File>> home(RequestUtil requestUtil, User user,Integer parentid, String searchString, Integer sortFlag) {
         RequestBody body = new RequestBody();
         body.setUser(user);
         body.setMatchCode(searchString);
+        body.setParentid(parentid);
         if (sortFlag != null && !"".equals(sortFlag)) {
             body.setSortFlag(sortFlag);
-            body.setSortType("asc");
+            body.setSortType(0);
         }
-        ServerResponse<List<File>> response = requestUtil.requestUserXCloudServer(RequestURL.HOME_URL.getDesc(), body, new TypeToken<ServerResponse<List<File>>>() {
+        return requestUtil.requestUserXCloudServer(RequestURL.HOME_URL.getDesc(), body, new TypeToken<ServerResponse<List<File>>>() {
         });
-        if (response != null) {
-            if (response.getStatus() == ResponseCodeENUM.SUCCESS.getCode()) {
-                return response;
-            }
-        }
-        return null;
     }
 
     @Override

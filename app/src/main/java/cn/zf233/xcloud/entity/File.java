@@ -1,49 +1,58 @@
 package cn.zf233.xcloud.entity;
 
-import java.net.URI;
-
 /**
  * Created by zf233 on 11/28/20
  */
 public class File {
-    private Integer no;
-    private Integer fileId;
+    private Integer id;
+    private Integer parentId;
+    private Integer folder;
     private String fileName;
     private String fileType;
     private String fileSize;
-    private Long uploadTime;
+    private String uploadTime;
     private String remark;
     private Integer downloadCount;
     private Integer logoID;
 
-    public File(URI uri) {
+    public File() {
     }
 
-    public File(Integer no, Integer fileId, String fileName, String fileType, String fileSize, Long uploadTime, String remark, Integer downloadCount) {
-        this.no = no;
-        this.fileId = fileId;
+    public File(Integer id, Integer parentId, Integer folder, String fileName, String fileType, String fileSize, String uploadTime, String remark, Integer downloadCount, Integer logoID) {
+        this.id = id;
+        this.parentId = parentId;
+        this.folder = folder;
         this.fileName = fileName;
         this.fileType = fileType;
         this.fileSize = fileSize;
         this.uploadTime = uploadTime;
         this.remark = remark;
         this.downloadCount = downloadCount;
+        this.logoID = logoID;
     }
 
-    public Integer getNo() {
-        return no;
+    public Integer getId() {
+        return id;
     }
 
-    public void setNo(Integer no) {
-        this.no = no;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public Integer getFileId() {
-        return fileId;
+    public Integer getParentId() {
+        return parentId;
     }
 
-    public void setFileId(Integer fileId) {
-        this.fileId = fileId;
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
+    public Integer getFolder() {
+        return folder;
+    }
+
+    public void setFolder(Integer folder) {
+        this.folder = folder;
     }
 
     public String getFileName() {
@@ -70,11 +79,11 @@ public class File {
         this.fileSize = fileSize;
     }
 
-    public Long getUploadTime() {
+    public String getUploadTime() {
         return uploadTime;
     }
 
-    public void setUploadTime(Long uploadTime) {
+    public void setUploadTime(String uploadTime) {
         this.uploadTime = uploadTime;
     }
 
@@ -101,5 +110,4 @@ public class File {
     public void setLogoID(Integer logoID) {
         this.logoID = logoID;
     }
-
 }

@@ -23,7 +23,7 @@
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_gravity="center_vertical"
-            app:srcCompat="@drawable/html" />
+            app:srcCompat="@mipmap/html" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -71,7 +71,7 @@
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
-            android:src="@drawable/eye" />
+            android:src="@mipmap/eye" />
     </LinearLayout>
 
 

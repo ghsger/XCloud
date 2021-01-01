@@ -14,11 +14,18 @@
         android:layout_height="50dp"
         android:orientation="horizontal">
 
-        <View
+        <LinearLayout
+            android:id="@+id/goBackFolderLayout"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="bottom"
-            android:layout_weight="1" />
+            android:gravity="center_horizontal|bottom">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="30dp"
+                android:src="@mipmap/goback" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -31,7 +38,7 @@
                 android:id="@+id/xcloudTitle"
                 android:layout_width="200dp"
                 android:layout_height="40dp"
-                android:src="@drawable/xcloud01" />
+                android:src="@mipmap/xcloud01" />
 
             <Spinner
                 android:id="@+id/spinnerUp"
@@ -50,13 +57,11 @@
 
             <ImageView
                 android:id="@+id/spinnerShow"
-                android:layout_width="0dp"
+                android:layout_width="40dp"
                 android:layout_height="30dp"
                 android:layout_gravity="bottom"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/sortimg02" />
+                app:srcCompat="@mipmap/sortimg02" />
         </LinearLayout>
-
 
     </LinearLayout>
 
@@ -78,7 +83,7 @@
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:layout_weight="1"
-            android:src="@drawable/search" />
+            android:src="@mipmap/search" />
 
         <EditText
             android:id="@+id/searchFileText"
@@ -96,7 +101,7 @@
             android:layout_width="25dp"
             android:layout_height="20dp"
             android:layout_weight="1"
-            android:src="@drawable/enter" />
+            android:src="@mipmap/enter" />
     </LinearLayout>
 
     <LinearLayout
@@ -120,7 +125,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="30dp"
-                android:src="@mipmap/add07"
+                android:src="@mipmap/add"
                 app:backgroundTint="#E1E1FB"
                 app:elevation="8dp"
                 app:pressedTranslationZ="16dp"
@@ -144,36 +149,66 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/bottomButton"
+        android:id="@+id/absolutePath"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_alignParentBottom="true"
-        android:gravity="bottom"
-        android:minHeight="40dp"
+        android:layout_height="17dp"
+        android:layout_above="@+id/singleLine"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/homeButtonImage"
-            android:layout_width="30dp"
-            android:layout_height="27dp"
-            android:layout_marginBottom="3dp"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/homebutton05" />
+        <TextView
+            android:id="@+id/absolutePathText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="5dp"
+            android:textSize="13dp" />
+    </LinearLayout>
 
-        <ImageView
+    <View
+        android:id="@+id/singleLine"
+        android:layout_width="match_parent"
+        android:layout_height="0.05dp"
+        android:layout_above="@+id/bottomButton"
+        android:background="#CECECE" />
 
-            android:id="@+id/xcloudLogo"
-            android:layout_width="35dp"
+    <LinearLayout
+        android:id="@+id/bottomButton"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:minHeight="30dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/xcloud02" />
+            android:gravity="bottom"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/currentUserHeadImage"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginBottom="1dp"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/user002" />
+            <ImageView
+                android:id="@+id/createFolderImage"
+                android:layout_width="30dp"
+                android:layout_height="23dp"
+                android:layout_marginBottom="3dp"
+                android:layout_weight="1"
+                app:srcCompat="@mipmap/createfolder" />
+
+            <ImageView
+
+                android:id="@+id/xcloudLogo"
+                android:layout_width="35dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                app:srcCompat="@mipmap/xcloud02" />
+
+            <ImageView
+                android:id="@+id/currentUserHeadImage"
+                android:layout_width="32dp"
+                android:layout_height="23dp"
+                android:layout_marginBottom="1dp"
+                android:layout_weight="1"
+                app:srcCompat="@mipmap/user002" />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

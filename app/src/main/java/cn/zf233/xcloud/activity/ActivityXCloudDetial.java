@@ -39,9 +39,11 @@ public class ActivityXCloudDetial extends AppCompatActivity {
         ImageView imageView02 = findViewById(R.id.detialImage02);
         ImageView imageView03 = findViewById(R.id.detialImage03);
         ImageView imageView04 = findViewById(R.id.detialImage04);
-        imageView01.setImageResource(R.drawable.github);
-        imageView02.setImageResource(R.drawable.qq);
-        imageView03.setImageResource(R.drawable.email);
-        imageView04.setImageResource(R.drawable.author);
+        ImageView imageView05 = findViewById(R.id.detialImage05);
+        imageView01.setImageResource(R.mipmap.github);
+        imageView02.setImageResource(R.mipmap.qq);
+        imageView03.setImageResource(R.mipmap.email);
+        imageView04.setImageResource(R.mipmap.author);
+        imageView05.setImageResource(R.mipmap.update_msg);
     }
 }

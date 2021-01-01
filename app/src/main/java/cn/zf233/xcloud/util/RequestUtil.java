@@ -7,9 +7,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
+import cn.zf233.xcloud.common.RequestBody;
 import cn.zf233.xcloud.common.RequestTypeENUM;
+import cn.zf233.xcloud.common.ResponseCodeENUM;
 import cn.zf233.xcloud.common.ServerResponse;
-import cn.zf233.xcloud.entity.RequestBody;
 import cn.zf233.xcloud.entity.User;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
@@ -55,7 +56,10 @@ public class RequestUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        ServerResponse serverResponse = new ServerResponse();
+        serverResponse.setStatus(ResponseCodeENUM.ERROR.getCode());
+        serverResponse.setMsg("请求超时");
+        return serverResponse;
     }
 
     // file download
@@ -90,7 +94,6 @@ public class RequestUtil {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
         return null;
     }
@@ -100,6 +103,7 @@ public class RequestUtil {
         try {
             OkHttpClient client = new OkHttpClient();
             FormBody body = new FormBody.Builder()
+                    .add("id", user.getId().toString())
                     .add("username", user.getUsername())
                     .add("password", user.getPassword())
                     .add("fileid", fileID.toString())
@@ -119,13 +123,46 @@ public class RequestUtil {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
-        return null;
+        ServerResponse serverResponse = new ServerResponse();
+        serverResponse.setStatus(ResponseCodeENUM.ERROR.getCode());
+        serverResponse.setMsg("请求超时");
+        return serverResponse;
+    }
+
+    // create folder
+    public ServerResponse createFoler(String url, User user, String folderName, Integer parentid) {
+        try {
+            OkHttpClient client = new OkHttpClient();
+            FormBody body = new FormBody.Builder()
+                    .add("id", user.getId().toString())
+                    .add("foldername", folderName)
+                    .add("parentid", parentid != null ? parentid.toString() : "")
+                    .add("appVersionCode", RequestTypeENUM.VERSION_FAILURE.getDesc())
+                    .build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            Response response;
+            response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String json = response.body() != null ? response.body().string() : null;
+                if (json != null) {
+                    return JsonUtil.toObject(json, ServerResponse.class);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        ServerResponse serverResponse = new ServerResponse();
+        serverResponse.setStatus(ResponseCodeENUM.ERROR.getCode());
+        serverResponse.setMsg("请求超时");
+        return serverResponse;
     }
 
     // file upload
-    public ServerResponse uploadFile(String url, User user, File uploadFile) {
+    public ServerResponse uploadFile(String url, User user, File uploadFile, Integer parentid) {
         OkHttpClient client = new OkHttpClient
                 .Builder()
                 .connectTimeout(60, TimeUnit.SECONDS)
@@ -138,6 +175,7 @@ public class RequestUtil {
                 .addFormDataPart("id", user.getId().toString())
                 .addFormDataPart("username", user.getUsername())
                 .addFormDataPart("password", user.getPassword())
+                .addFormDataPart("parentid", parentid != null ? parentid.toString() : "")
                 .addFormDataPart("appVersionCode", RequestTypeENUM.VERSION_FAILURE.getDesc())
                 .build();
         Request request = new Request.Builder()
@@ -148,15 +186,18 @@ public class RequestUtil {
         try {
             response = client.newCall(request).execute();
             if (response.isSuccessful()) {
-                ServerResponse serverResponse = new ServerResponse();
-                serverResponse.setStatus(200);
-                return serverResponse;
+                String json = response.body() != null ? response.body().string() : null;
+                if (json != null) {
+                    return JsonUtil.toObject(json, ServerResponse.class);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
-        return null;
+        ServerResponse serverResponse = new ServerResponse();
+        serverResponse.setStatus(ResponseCodeENUM.ERROR.getCode());
+        serverResponse.setMsg("请求超时");
+        return serverResponse;
     }
 
     public Boolean getIsUsed() {

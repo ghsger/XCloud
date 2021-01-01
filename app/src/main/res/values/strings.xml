@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">XCloud</string>
-    <string name="app_version">V3.3.1</string>
+    <string name="app_version">V4.3.5</string>
     <string name="app_title">
         手&#160;机、平&#160;板、网&#160;页&#160;在&#160;线&#160;随&#160;存&#160;随&#160;取&#160;都&#160;毫&#160;无&#160;压&#160;力
     </string>
@@ -22,6 +22,7 @@
     <string name="username_string">账号</string>
     <string name="password_string">密码</string>
     <string name="invite_code_string">邀请</string>
+    <string name="version_update_details">Add folder handling functionality</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

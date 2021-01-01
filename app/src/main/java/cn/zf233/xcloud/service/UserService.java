@@ -13,7 +13,7 @@ import cn.zf233.xcloud.util.RequestUtil;
 public interface UserService {
     ServerResponse<User> login(RequestUtil requestUtil, User user);
 
-    ServerResponse<List<File>> home(RequestUtil requestUtil, User user, String searchString, String sortFlag);
+    ServerResponse<List<File>> home(RequestUtil requestUtil, User user,Integer folderid, String searchString, Integer sortFlag);
 
     ServerResponse<User> regist(RequestUtil requestUtil, User user, String code);
 

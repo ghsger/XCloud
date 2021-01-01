@@ -1,27 +1,31 @@
-package cn.zf233.xcloud.entity;
+package cn.zf233.xcloud.common;
 
-import cn.zf233.xcloud.common.RequestTypeENUM;
+
+import cn.zf233.xcloud.entity.User;
+import cn.zf233.xcloud.entity.VersionPermission;
 
 /**
  * Created by zf233 on 11/28/20
  */
 public class RequestBody {
     private User user;
-    private String sortFlag;
-    private String sortType;
+    private Integer sortFlag;
+    private Integer sortType;
     private String matchCode;
     private String inviteCode;
+    private Integer parentid;
     private VersionPermission versionPermission = new VersionPermission(1, RequestTypeENUM.VERSION_FAILURE.getDesc());
 
     public RequestBody() {
     }
 
-    public RequestBody(User user, String sortFlag, String sortType, String matchCode, String inviteCode, VersionPermission versionPermission) {
+    public RequestBody(User user, Integer sortFlag, Integer sortType, String matchCode, String inviteCode, Integer parentid, VersionPermission versionPermission) {
         this.user = user;
         this.sortFlag = sortFlag;
         this.sortType = sortType;
         this.matchCode = matchCode;
         this.inviteCode = inviteCode;
+        this.parentid = parentid;
         this.versionPermission = versionPermission;
     }
 
@@ -33,19 +37,19 @@ public class RequestBody {
         this.user = user;
     }
 
-    public String getSortFlag() {
+    public Integer getSortFlag() {
         return sortFlag;
     }
 
-    public void setSortFlag(String sortFlag) {
+    public void setSortFlag(Integer sortFlag) {
         this.sortFlag = sortFlag;
     }
 
-    public String getSortType() {
+    public Integer getSortType() {
         return sortType;
     }
 
-    public void setSortType(String sortType) {
+    public void setSortType(Integer sortType) {
         this.sortType = sortType;
     }
 
@@ -63,6 +67,14 @@ public class RequestBody {
 
     public void setInviteCode(String inviteCode) {
         this.inviteCode = inviteCode;
+    }
+
+    public Integer getParentid() {
+        return parentid;
+    }
+
+    public void setParentid(Integer parentid) {
+        this.parentid = parentid;
     }
 
     public VersionPermission getVersionPermission() {

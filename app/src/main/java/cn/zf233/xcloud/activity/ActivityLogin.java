@@ -9,16 +9,17 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.apache.commons.lang.StringUtils;
+
 import cn.zf233.xcloud.R;
 import cn.zf233.xcloud.common.Const;
-import cn.zf233.xcloud.common.ResponseCodeENUM;
 import cn.zf233.xcloud.common.ServerResponse;
 import cn.zf233.xcloud.entity.User;
 import cn.zf233.xcloud.service.UserService;
 import cn.zf233.xcloud.service.impl.UserServiceImpl;
 import cn.zf233.xcloud.util.FileUtil;
-import cn.zf233.xcloud.util.RequestUtil;
 import cn.zf233.xcloud.util.JumpActivityUtil;
+import cn.zf233.xcloud.util.RequestUtil;
 import cn.zf233.xcloud.util.ToastUtil;
 
 public class ActivityLogin extends AppCompatActivity {
@@ -45,7 +46,7 @@ public class ActivityLogin extends AppCompatActivity {
             loginUserLayout.startAnimation(clickAnimation);
             String username = usernameLoginText.getText().toString().trim();
             String password = passwordLoginText.getText().toString().trim();
-            if ("".equals(username) || "".equals(password)) {
+            if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
                 ToastUtil.showShortToast("用户名密码不可为空");
                 return;
             }
@@ -57,15 +58,17 @@ public class ActivityLogin extends AppCompatActivity {
             user.setUsername(username);
             user.setPassword(password);
             ServerResponse<User> response = userService.login(RequestUtil.getRequestUtil(), user);
-            if (response.getStatus() == ResponseCodeENUM.SUCCESS.getCode()) {
-                FileUtil.outputShared(ActivityLogin.this, Const.CURRENT_USER.getDesc(), response.getData());
+            if (response.isSuccess()) {
+                user.setId(response.getData().getId());
+                FileUtil.removeShared(ActivityLogin.this, Const.CURRENT_USER.getDesc());
+                FileUtil.outputShared(ActivityLogin.this, Const.CURRENT_USER.getDesc(), user);
                 MainActivity.mainActivity.finish();
                 Intent intent = new Intent(ActivityLogin.this, ActivityHome.class);
                 intent.putExtra(Const.MSG.getDesc(), response.getMsg());
                 JumpActivityUtil.jumpActivity(this, intent, 100L, true);
                 return;
             }
-            ToastUtil.showShortToast(response.getMsg());
+            ToastUtil.showLongToast(response.getMsg());
         });
     }
 }

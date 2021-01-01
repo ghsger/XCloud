@@ -20,14 +20,13 @@ import java.util.List;
 
 import cn.zf233.xcloud.R;
 import cn.zf233.xcloud.common.Const;
-import cn.zf233.xcloud.common.ResponseCodeENUM;
 import cn.zf233.xcloud.common.ServerResponse;
 import cn.zf233.xcloud.entity.User;
 import cn.zf233.xcloud.service.UserService;
 import cn.zf233.xcloud.service.impl.UserServiceImpl;
 import cn.zf233.xcloud.util.FileUtil;
-import cn.zf233.xcloud.util.RequestUtil;
 import cn.zf233.xcloud.util.JumpActivityUtil;
+import cn.zf233.xcloud.util.RequestUtil;
 
 public class ActivityUser extends AppCompatActivity {
 
@@ -46,13 +45,13 @@ public class ActivityUser extends AppCompatActivity {
     private Animation clickAnimation;
 
     {
-        userGradeImgID.add(R.drawable.no01);
-        userGradeImgID.add(R.drawable.no02);
-        userGradeImgID.add(R.drawable.no03);
-        userGradeImgID.add(R.drawable.no04);
-        userGradeImgID.add(R.drawable.no05);
-        userGradeImgID.add(R.drawable.no06);
-        userGradeImgID.add(R.drawable.non);
+        userGradeImgID.add(R.mipmap.no01);
+        userGradeImgID.add(R.mipmap.no02);
+        userGradeImgID.add(R.mipmap.no03);
+        userGradeImgID.add(R.mipmap.no04);
+        userGradeImgID.add(R.mipmap.no05);
+        userGradeImgID.add(R.mipmap.no06);
+        userGradeImgID.add(R.mipmap.non);
     }
 
     @SuppressLint("SetTextI18n")
@@ -87,25 +86,20 @@ public class ActivityUser extends AppCompatActivity {
         @SuppressLint("SetTextI18n")
         @Override
         public boolean handleMessage(Message msg) {
-            if (user.getNickname() != null && !"".equals(user.getNickname())) {
-                currentUserUsernameText.setText(user.getNickname());
-            } else {
-                currentUserUsernameText.setText(user.getUsername());
-            }
-            if (user.getGrade() > 6) {
+            currentUserUsernameText.setText(ActivityUser.user.getUsername());
+            if (ActivityUser.user.getGrade() > 6) {
                 userGradeImg.setImageResource(userGradeImgID.get(6));
             } else {
                 userGradeImg.setImageResource(userGradeImgID.get(user.getGrade() - 1));
             }
-            int downloadCount = user.getDownloadCount() % 100;
-            int availableSpace = user.getGrade() * 10;
-            int usedSpace = ActivityHome.fileList == null ? 0 : ActivityHome.fileList.size();
+            int growthValue = ActivityUser.user.getGrowthValue() % 100;
+            int availableSpace = ActivityUser.user.getGrade() * 10;
             numberCountBar.setMax(availableSpace);
-            numberCountBar.setProgress(usedSpace);
-            numberCountText.setText(usedSpace + "/" + availableSpace);
+            numberCountBar.setProgress(ActivityUser.user.getUseCapacity());
+            numberCountText.setText(ActivityUser.user.getUseCapacity() + "/" + availableSpace);
             levelGroupBar.setMax(100);
-            levelGroupBar.setProgress(downloadCount);
-            levelGroupText.setText(downloadCount + "/100");
+            levelGroupBar.setProgress(growthValue);
+            levelGroupText.setText(growthValue + "/100");
             return false;
         }
     });
@@ -124,16 +118,20 @@ public class ActivityUser extends AppCompatActivity {
             Looper.prepare();
             User user = FileUtil.inputShared(ActivityUser.this, Const.CURRENT_USER.getDesc(), User.class);
             ServerResponse<User> response = userService.login(RequestUtil.getRequestUtil(), user);
-            if (response.getStatus() == ResponseCodeENUM.ERROR.getCode()) {
+            if (!response.isSuccess()) {
                 FileUtil.removeShared(ActivityUser.this, Const.CURRENT_USER.getDesc());
                 Intent intent = new Intent(ActivityUser.this, MainActivity.class);
                 intent.putExtra(Const.MSG.getDesc(), response.getMsg());
                 jumpActivity(intent);
-
-            } else if (response.getStatus() == ResponseCodeENUM.SUCCESS.getCode()) {
-                ActivityUser.user = response.getData();
+            } else if (response.isSuccess()) {
+                user.setId(response.getData().getId());
+                FileUtil.removeShared(ActivityUser.this, Const.CURRENT_USER.getDesc());
                 FileUtil.outputShared(ActivityUser.this, Const.CURRENT_USER.getDesc(), user);
+                ActivityUser.user = response.getData();
                 userHandler.sendMessage(new Message());
+            } else {
+                Intent intent = new Intent(ActivityUser.this, MainActivity.class);
+                jumpActivity(intent);
             }
             Looper.loop();
         }

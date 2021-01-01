@@ -10,16 +10,17 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.apache.commons.lang.StringUtils;
+
 import cn.zf233.xcloud.R;
 import cn.zf233.xcloud.common.Const;
-import cn.zf233.xcloud.common.ResponseCodeENUM;
 import cn.zf233.xcloud.common.ServerResponse;
 import cn.zf233.xcloud.entity.User;
 import cn.zf233.xcloud.service.UserService;
 import cn.zf233.xcloud.service.impl.UserServiceImpl;
 import cn.zf233.xcloud.util.FileUtil;
-import cn.zf233.xcloud.util.RequestUtil;
 import cn.zf233.xcloud.util.JumpActivityUtil;
+import cn.zf233.xcloud.util.RequestUtil;
 import cn.zf233.xcloud.util.ToastUtil;
 
 public class ActivityRegist extends AppCompatActivity {
@@ -49,12 +50,12 @@ public class ActivityRegist extends AppCompatActivity {
             String username = usernameRegistText.getText().toString().trim();
             String password = passwordRegistText.getText().toString().trim();
             String code = codeRegistText.getText().toString().trim();
-            if ("".equals(code)) {
-                Toast.makeText(ActivityRegist.this, "邀请码不能为空", Toast.LENGTH_SHORT).show();
+            if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
+                Toast.makeText(ActivityRegist.this, "用户名密码不能为空", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if ("".equals(username) || "".equals(password)) {
-                Toast.makeText(ActivityRegist.this, "用户名密码不能为空", Toast.LENGTH_SHORT).show();
+            if (StringUtils.isBlank(code)) {
+                Toast.makeText(ActivityRegist.this, "邀请码不能为空", Toast.LENGTH_SHORT).show();
                 return;
             }
             if (username.length() < 4 || password.length() < 5) {
@@ -65,15 +66,17 @@ public class ActivityRegist extends AppCompatActivity {
             user.setUsername(username);
             user.setPassword(password);
             ServerResponse<User> response = userService.regist(RequestUtil.getRequestUtil(), user, code);
-            if (response.getStatus() == ResponseCodeENUM.SUCCESS.getCode()) {
-                FileUtil.outputShared(ActivityRegist.this, Const.CURRENT_USER.getDesc(), response.getData());
+            if (response.isSuccess()) {
+                user.setId(response.getData().getId());
+                FileUtil.removeShared(ActivityRegist.this, Const.CURRENT_USER.getDesc());
+                FileUtil.outputShared(ActivityRegist.this, Const.CURRENT_USER.getDesc(), user);
                 MainActivity.mainActivity.finish();
                 Intent intent = new Intent(ActivityRegist.this, ActivityHome.class);
                 intent.putExtra(Const.MSG.getDesc(), response.getMsg());
                 JumpActivityUtil.jumpActivity(this, intent, 100L, true);
                 return;
             }
-            ToastUtil.showShortToast(response.getMsg());
+            ToastUtil.showLongToast(response.getMsg());
         });
     }
 }

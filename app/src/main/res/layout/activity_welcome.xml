@@ -29,7 +29,7 @@
                     android:id="@+id/imageView"
                     android:layout_width="70dp"
                     android:layout_height="80dp"
-                    app:srcCompat="@drawable/xcloud02" />
+                    app:srcCompat="@mipmap/xcloud02" />
 
                 <LinearLayout
                     android:layout_width="125dp"
@@ -41,7 +41,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_marginTop="19dp"
-                        app:srcCompat="@drawable/xcloud01" />
+                        app:srcCompat="@mipmap/xcloud01" />
 
                     <TextView
                         android:id="@+id/textView"
@@ -73,13 +73,13 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:src="@drawable/pc" />
+                android:src="@mipmap/pc" />
 
             <ImageView
                 android:layout_width="12dp"
                 android:layout_height="16dp"
                 android:layout_marginLeft="3dp"
-                android:src="@drawable/phone" />
+                android:src="@mipmap/phone" />
 
             <TextView
                 android:id="@+id/textView10"

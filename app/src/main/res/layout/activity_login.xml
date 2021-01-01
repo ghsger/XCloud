@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_marginTop="70dp"
-        android:src="@drawable/xcloud03" />
+        android:src="@mipmap/xcloud03" />
 
 
     <TextView

@@ -11,6 +11,8 @@ import android.view.animation.AnimationUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.apache.commons.lang.StringUtils;
+
 import cn.zf233.xcloud.R;
 import cn.zf233.xcloud.common.Const;
 import cn.zf233.xcloud.util.PermisionUtils;
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         loginLayout = findViewById(R.id.loginLayout);
         registLayout = findViewById(R.id.regist);
         clickAnimation = AnimationUtils.loadAnimation(this, R.anim.click);
-        mainActivity = this;
+        MainActivity.mainActivity = this;
 
         // set Thread Policy
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
@@ -62,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         String msg = this.getIntent().getStringExtra(Const.MSG.getDesc());
-        if (null != msg && !"".equals(msg)) {
+        if (StringUtils.isNotBlank(msg)) {
             ToastUtil.showLongToast(msg);
             this.getIntent().removeExtra(Const.MSG.getDesc());
         }

@@ -16,7 +16,7 @@
         android:layout_height="15dp"
         android:layout_marginLeft="10dp"
         android:layout_gravity="center_vertical"
-        app:srcCompat="@drawable/time" />
+        app:srcCompat="@mipmap/time" />
 
     <TextView
         android:id="@+id/sortTypeText"

@@ -10,7 +10,8 @@ public enum RequestTypeENUM {
     UPLOAD_TYPE(3, "upload"),
     REMOVE_TYPE(4, "remove"),
     FLUSH_LISTVIEW(5, "flushListView"),
-    VERSION_FAILURE(700, "xcloud_3.3.1");
+    CREATE_FOLDER(6, "create_folder"),
+    VERSION_FAILURE(700, "xcloud_4.3.5");
 
     private final Integer code;
     private final String desc;

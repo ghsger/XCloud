@@ -11,7 +11,7 @@ android {
         minSdkVersion 26
         targetSdkVersion 26
         versionCode 1
-        versionName "3.3.1"
+        versionName "4.3.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -51,4 +51,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.squareup.okhttp3:okhttp:3.14.2'
     implementation 'com.squareup.okio:okio:1.17.4'
+    implementation group: 'commons-lang', name: 'commons-lang', version: '2.6'
 }

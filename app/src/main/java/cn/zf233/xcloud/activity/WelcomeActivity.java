@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import cn.zf233.xcloud.R;
 import cn.zf233.xcloud.common.Const;
-import cn.zf233.xcloud.common.ResponseCodeENUM;
 import cn.zf233.xcloud.common.ServerResponse;
 import cn.zf233.xcloud.entity.User;
 import cn.zf233.xcloud.service.UserService;
@@ -24,14 +23,14 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private final UserService userService = new UserServiceImpl();
 
-    private View view;
+    private View welcomeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        view = findViewById(R.id.welcomeLayout);
+        welcomeLayout = findViewById(R.id.welcomeLayout);
         new Thread(new WelcomeRunnable()).start();
     }
 
@@ -59,7 +58,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
                 }
             });
-            view.startAnimation(alphaAnimation);
+            welcomeLayout.startAnimation(alphaAnimation);
 
         }, 1500);
         Looper.loop();
@@ -79,12 +78,12 @@ public class WelcomeActivity extends AppCompatActivity {
                 return;
             }
             ServerResponse<User> response = userService.login(RequestUtil.getRequestUtil(), user);
-            if (response.getStatus() == ResponseCodeENUM.ERROR.getCode()) {
+            if (!response.isSuccess()) {
                 FileUtil.removeShared(WelcomeActivity.this, Const.CURRENT_USER.getDesc());
                 intent = new Intent(WelcomeActivity.this, MainActivity.class);
                 msg = response.getMsg();
-            } else if (response.getStatus() == ResponseCodeENUM.SUCCESS.getCode()) {
-                user = response.getData();
+            } else if (response.isSuccess()) {
+                user.setId(response.getData().getId());
                 FileUtil.removeShared(WelcomeActivity.this, Const.CURRENT_USER.getDesc());
                 FileUtil.outputShared(WelcomeActivity.this, Const.CURRENT_USER.getDesc(), user);
                 intent = new Intent(WelcomeActivity.this, ActivityHome.class);

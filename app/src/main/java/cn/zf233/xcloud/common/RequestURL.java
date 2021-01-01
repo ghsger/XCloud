@@ -11,7 +11,8 @@ public enum RequestURL {
     UPDATE_URL(3, "http://182.92.233.100:8080/xcloud/user/update"),
     DOWNLOAD_URL(4, "http://182.92.233.100:8080/xcloud/file/download"),
     REMOVE_FILE_URL(5, "http://182.92.233.100:8080/xcloud/file/delete"),
-    UPLOAD_FILE_URL(6, "http://182.92.233.100:8080/xcloud/file/upload");
+    UPLOAD_FILE_URL(6, "http://182.92.233.100:8080/xcloud/file/upload"),
+    CREATE_FOLDER(6, "http://182.92.233.100:8080/xcloud/file/createfolder");
 
     private final Integer code;
     private final String desc;
