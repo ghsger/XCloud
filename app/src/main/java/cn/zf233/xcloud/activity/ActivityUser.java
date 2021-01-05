@@ -87,13 +87,13 @@ public class ActivityUser extends AppCompatActivity {
         @Override
         public boolean handleMessage(Message msg) {
             currentUserUsernameText.setText(ActivityUser.user.getUsername());
-            if (ActivityUser.user.getGrade() > 6) {
+            if (ActivityUser.user.getLevel() > 6) {
                 userGradeImg.setImageResource(userGradeImgID.get(6));
             } else {
-                userGradeImg.setImageResource(userGradeImgID.get(user.getGrade() - 1));
+                userGradeImg.setImageResource(userGradeImgID.get(user.getLevel() - 1));
             }
             int growthValue = ActivityUser.user.getGrowthValue() % 100;
-            int availableSpace = ActivityUser.user.getGrade() * 10;
+            int availableSpace = ActivityUser.user.getLevel() * 10;
             numberCountBar.setMax(availableSpace);
             numberCountBar.setProgress(ActivityUser.user.getUseCapacity());
             numberCountText.setText(ActivityUser.user.getUseCapacity() + "/" + availableSpace);

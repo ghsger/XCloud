@@ -2,6 +2,8 @@ package cn.zf233.xcloud.util;
 
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +30,7 @@ public class RequestUtil {
     private Boolean isUsed;
     private Integer requestType;
     private String fileName;
+    private String session = "";
 
     public static final RequestUtil requestUtil = new RequestUtil();
 
@@ -43,11 +46,13 @@ public class RequestUtil {
                     .add("requestBody", JsonUtil.toGson(requestBody))
                     .build();
             Request request = new Request.Builder()
+                    .addHeader("cookie", session)
                     .url(url).post(body)
                     .build();
             Response response;
             response = client.newCall(request).execute();
             if (response.isSuccessful()) {
+                saveSession(response);
                 String json = response.body() != null ? response.body().string() : null;
                 if (json != null) {
                     return JsonUtil.toObject(json, token);
@@ -78,10 +83,12 @@ public class RequestUtil {
                     .add("appVersionCode", RequestTypeENUM.VERSION_FAILURE.getDesc())
                     .build();
             Request request = new Request.Builder()
+                    .addHeader("cookie", session)
                     .url(url).post(body)
                     .build();
             Response response = client.newCall(request).execute();
             if (response.isSuccessful()) {
+                saveSession(response);
                 String header = response.header("Content-Disposition");
                 if (header != null && !"".equals(header)) {
                     String filename = header.substring(header.indexOf("filename") + "filename".length() + 2, header.lastIndexOf("\""));
@@ -110,12 +117,14 @@ public class RequestUtil {
                     .add("appVersionCode", RequestTypeENUM.VERSION_FAILURE.getDesc())
                     .build();
             Request request = new Request.Builder()
+                    .addHeader("cookie", session)
                     .url(url)
                     .post(body)
                     .build();
             Response response;
             response = client.newCall(request).execute();
             if (response.isSuccessful()) {
+                saveSession(response);
                 String json = response.body() != null ? response.body().string() : null;
                 if (json != null) {
                     return JsonUtil.toObject(json, ServerResponse.class);
@@ -131,22 +140,26 @@ public class RequestUtil {
     }
 
     // create folder
-    public ServerResponse createFoler(String url, User user, String folderName, Integer parentid) {
+    public ServerResponse createFolder(String url, User user, String folderName, Integer parentid) {
         try {
             OkHttpClient client = new OkHttpClient();
             FormBody body = new FormBody.Builder()
                     .add("id", user.getId().toString())
+                    .add("username", user.getUsername())
+                    .add("password", user.getPassword())
                     .add("foldername", folderName)
                     .add("parentid", parentid != null ? parentid.toString() : "")
                     .add("appVersionCode", RequestTypeENUM.VERSION_FAILURE.getDesc())
                     .build();
             Request request = new Request.Builder()
+                    .addHeader("cookie", session)
                     .url(url)
                     .post(body)
                     .build();
             Response response;
             response = client.newCall(request).execute();
             if (response.isSuccessful()) {
+                saveSession(response);
                 String json = response.body() != null ? response.body().string() : null;
                 if (json != null) {
                     return JsonUtil.toObject(json, ServerResponse.class);
@@ -179,6 +192,7 @@ public class RequestUtil {
                 .addFormDataPart("appVersionCode", RequestTypeENUM.VERSION_FAILURE.getDesc())
                 .build();
         Request request = new Request.Builder()
+                .addHeader("cookie", session)
                 .url(url)
                 .post(requestBody)
                 .build();
@@ -186,6 +200,7 @@ public class RequestUtil {
         try {
             response = client.newCall(request).execute();
             if (response.isSuccessful()) {
+                saveSession(response);
                 String json = response.body() != null ? response.body().string() : null;
                 if (json != null) {
                     return JsonUtil.toObject(json, ServerResponse.class);
@@ -198,6 +213,13 @@ public class RequestUtil {
         serverResponse.setStatus(ResponseCodeENUM.ERROR.getCode());
         serverResponse.setMsg("请求超时");
         return serverResponse;
+    }
+
+    private void saveSession(Response response) {
+        String jsession = response.headers().get("Set-Cookie");
+        if (StringUtils.isNotBlank(jsession)) {
+            this.session = jsession.substring(0, jsession.indexOf(";"));
+        }
     }
 
     public Boolean getIsUsed() {

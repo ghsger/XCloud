@@ -11,7 +11,7 @@ public enum RequestTypeENUM {
     REMOVE_TYPE(4, "remove"),
     FLUSH_LISTVIEW(5, "flushListView"),
     CREATE_FOLDER(6, "create_folder"),
-    VERSION_FAILURE(700, "xcloud_4.3.5");
+    VERSION_FAILURE(700, "xcloud_4.5.5");
 
     private final Integer code;
     private final String desc;

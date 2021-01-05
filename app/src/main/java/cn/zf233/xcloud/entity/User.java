@@ -11,20 +11,20 @@ public class User {
     private String password;
     private Integer role;
     private Integer useCapacity;
-    private Integer grade;
+    private Integer level;
     private Integer growthValue;
 
     public User() {
     }
 
-    public User(Integer id, String username, String nickname, String password, Integer role, Integer useCapacity, Integer grade, Integer growthValue) {
+    public User(Integer id, String username, String nickname, String password, Integer role, Integer useCapacity, Integer level, Integer growthValue) {
         this.id = id;
         this.username = username;
         this.nickname = nickname;
         this.password = password;
         this.role = role;
         this.useCapacity = useCapacity;
-        this.grade = grade;
+        this.level = level;
         this.growthValue = growthValue;
     }
 
@@ -76,12 +76,12 @@ public class User {
         this.useCapacity = useCapacity;
     }
 
-    public Integer getGrade() {
-        return grade;
+    public Integer getLevel() {
+        return level;
     }
 
-    public void setGrade(Integer grade) {
-        this.grade = grade;
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     public Integer getGrowthValue() {

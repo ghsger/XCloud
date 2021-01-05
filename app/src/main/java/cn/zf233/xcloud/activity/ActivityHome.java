@@ -63,7 +63,7 @@ public class ActivityHome extends AppCompatActivity {
 
     private static final List<Map<String, Object>> items = new ArrayList<>();
     public static List<File> fileList;
-    public static Integer parentid = -1;
+    public static Integer parentId = -1;
     public static Stack<Integer> grandpaStack = new Stack<>();
     public static List<AbsolutePath> absolutePath;
     @SuppressLint("StaticFieldLeak")
@@ -122,7 +122,7 @@ public class ActivityHome extends AppCompatActivity {
 
         init();
         // delay refreshing the file list
-        new Handler().postDelayed(() -> new Thread(new InitFileListRunnable(null, null, ActivityHome.parentid)).start(), 500);
+        new Handler().postDelayed(() -> new Thread(new InitFileListRunnable(null, null, ActivityHome.parentId)).start(), 500);
     }
 
     // start this activity
@@ -173,12 +173,10 @@ public class ActivityHome extends AppCompatActivity {
             if (ActivityHome.grandpaStack.isEmpty()) {
                 goBackFolderLayout.setAnimation(clickAnimation);
                 ToastUtil.showLongToast("已经是根");
-                ActivityHome.parentid = -1;
-                ActivityHome.grandpaStack.push(ActivityHome.parentid);
+            } else {
+                ActivityHome.parentId = ActivityHome.grandpaStack.pop();
+                new Thread(new InitFileListRunnable(null, null, ActivityHome.parentId)).start();
             }
-            Integer pop = ActivityHome.grandpaStack.pop();
-            ActivityHome.parentid = pop;
-            new Thread(new InitFileListRunnable(null, null, pop)).start();
         });
 
 
@@ -202,7 +200,7 @@ public class ActivityHome extends AppCompatActivity {
         // the drop-down refresh
         swipeRefreshLayout.setColorSchemeResources(R.color.file_list_refresh);
         // binding drop-down event
-        swipeRefreshLayout.setOnRefreshListener(() -> new Thread(new InitFileListRunnable(null, null, ActivityHome.parentid)).start());
+        swipeRefreshLayout.setOnRefreshListener(() -> new Thread(new InitFileListRunnable(null, null, ActivityHome.parentId)).start());
 
         // binding event-upload file
         floatingActionButton.setOnClickListener(v -> {
@@ -251,13 +249,13 @@ public class ActivityHome extends AppCompatActivity {
                     case 0:
                         break;
                     case 1:
-                        new Thread(new InitFileListRunnable(null, 3, ActivityHome.parentid)).start();
+                        new Thread(new InitFileListRunnable(null, 3, ActivityHome.parentId)).start();
                         break;
                     case 2:
-                        new Thread(new InitFileListRunnable(null, 0, ActivityHome.parentid)).start();
+                        new Thread(new InitFileListRunnable(null, 0, ActivityHome.parentId)).start();
                         break;
                     case 3:
-                        new Thread(new InitFileListRunnable(null, 2, ActivityHome.parentid)).start();
+                        new Thread(new InitFileListRunnable(null, 2, ActivityHome.parentId)).start();
                         break;
                     default:
                 }
@@ -303,7 +301,7 @@ public class ActivityHome extends AppCompatActivity {
             } else {
                 File file = new File();
                 file.setFileName(folderName);
-                file.setParentId(ActivityHome.parentid == -1 ? null : ActivityHome.parentid);
+                file.setParentId(ActivityHome.parentId == -1 ? null : ActivityHome.parentId);
                 new Thread(new CreateFolderRunnable(file)).start();
             }
             folderNameEditText.setText("");
@@ -317,9 +315,9 @@ public class ActivityHome extends AppCompatActivity {
             if (choiceFile.getFolder() == 0) {
                 new Thread(new FileDownloadRunnable(choiceFile)).start();
             } else { // this is a folder
-                ActivityHome.grandpaStack.push(ActivityHome.parentid);
-                ActivityHome.parentid = choiceFile.getId();
-                new Thread(new InitFileListRunnable(null, null, ActivityHome.parentid)).start();
+                ActivityHome.grandpaStack.push(ActivityHome.parentId);
+                ActivityHome.parentId = choiceFile.getId();
+                new Thread(new InitFileListRunnable(null, null, ActivityHome.parentId)).start();
             }
         });
 
@@ -369,7 +367,7 @@ public class ActivityHome extends AppCompatActivity {
             Intent intent = new Intent(ActivityHome.this, ActivityXCloudDetial.class);
             JumpActivityUtil.jumpActivity(this, intent, 100L, false);
         });
-        findViewById(R.id.searchFileEnter).setOnClickListener(v -> new Thread(new InitFileListRunnable(searchStringEditText.getText().toString(), null, ActivityHome.parentid)).start());
+        findViewById(R.id.searchFileEnter).setOnClickListener(v -> new Thread(new InitFileListRunnable(searchStringEditText.getText().toString(), null, ActivityHome.parentId)).start());
     }
 
     // callback function（selecting the file）
@@ -440,7 +438,8 @@ public class ActivityHome extends AppCompatActivity {
                         ActivityHome.absolutePath = serverResponse.getAbsolutePath();
 //                        bundle.putString(Const.MSG.getDesc(), "获取/刷新成功");
                     } else {
-                        ActivityHome.parentid = -1;
+                        ActivityHome.parentId = -1;
+                        ActivityHome.grandpaStack.clear();
                         bundle.putInt(Const.ERROR.getDesc(), serverResponse.getStatus());
                         bundle.putString(Const.MSG.getDesc(), serverResponse.getMsg());
                     }
@@ -495,7 +494,7 @@ public class ActivityHome extends AppCompatActivity {
                     requestUtil.setFileName(null);
                     message.setData(bundle);
                     xcloudLogo.clearAnimation();
-                    new Thread(new InitFileListRunnable(null, null, ActivityHome.parentid)).start();
+                    new Thread(new InitFileListRunnable(null, null, ActivityHome.parentId)).start();
                 }
                 requestPromptHandler.sendMessage(message);
             }
@@ -526,7 +525,7 @@ public class ActivityHome extends AppCompatActivity {
                     requestUtil.setRequestType(RequestTypeENUM.CREATE_FOLDER.getCode());
                     requestUtil.setFileName(file.getFileName());
                     xcloudLogo.startAnimation(waitAnimation);
-                    ServerResponse serverResponse = requestUtil.createFoler(RequestURL.CREATE_FOLDER.getDesc(), currentUser, file.getFileName(), parentid);
+                    ServerResponse serverResponse = requestUtil.createFolder(RequestURL.CREATE_FOLDER.getDesc(), currentUser, file.getFileName(), parentId);
                     if (serverResponse.isSuccess()) {
                         bundle.putString(Const.MSG.getDesc(), "创建成功");
                     } else {
@@ -538,7 +537,7 @@ public class ActivityHome extends AppCompatActivity {
                     requestUtil.setFileName(null);
                     message.setData(bundle);
                     xcloudLogo.clearAnimation();
-                    new Thread(new InitFileListRunnable(null, null, ActivityHome.parentid)).start();
+                    new Thread(new InitFileListRunnable(null, null, ActivityHome.parentId)).start();
                 }
                 requestPromptHandler.sendMessage(message);
             }
@@ -569,7 +568,7 @@ public class ActivityHome extends AppCompatActivity {
                     requestUtil.setRequestType(RequestTypeENUM.UPLOAD_TYPE.getCode());
                     requestUtil.setFileName(file.getName());
                     xcloudLogo.startAnimation(waitAnimation);
-                    ServerResponse serverResponse = requestUtil.uploadFile(RequestURL.UPLOAD_FILE_URL.getDesc(), currentUser, file, ActivityHome.parentid);
+                    ServerResponse serverResponse = requestUtil.uploadFile(RequestURL.UPLOAD_FILE_URL.getDesc(), currentUser, file, ActivityHome.parentId);
                     if (serverResponse.isSuccess()) {
                         bundle.putString(Const.MSG.getDesc(), "上传成功");
                     } else {
@@ -581,7 +580,7 @@ public class ActivityHome extends AppCompatActivity {
                     requestUtil.setFileName(null);
                     message.setData(bundle);
                     xcloudLogo.clearAnimation();
-                    new Thread(new InitFileListRunnable(null, null, ActivityHome.parentid)).start();
+                    new Thread(new InitFileListRunnable(null, null, ActivityHome.parentId)).start();
                 }
                 requestPromptHandler.sendMessage(message);
             }
